@@ -1,8 +1,12 @@
-from functions import (load_operations, is_executed, date_order, print_operation)
+# импортировали функции
+from functions import (load_operations, is_executed, get_date, print_operation)
 
+# загрузили список операций
 operations = load_operations()
-print(operations)
 
+# используем map для применения функции к каждому элементу списка
+# фильтруем список функцией is_executed и делаем защиту от пустых значений
+# возвращем 5 операций, начиная с последней
 operation = list(
     map(
         print_operation,
@@ -11,7 +15,7 @@ operation = list(
             sorted(
                 filter(
                     lambda x: x.get('date') is not None, operations),
-                key=date_order))))[:5]
+                key=get_date))))[:-6:-1]
 
-
-print("\n".join(operation))
+# разделяем операции пустой строкой
+print("\n\n".join(operation))
