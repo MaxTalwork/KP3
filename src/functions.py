@@ -43,9 +43,9 @@ def operation_from(operation):
     operation_card = transaction_from[0:transaction_from.rfind(' ',)]
     card_number = transaction_from[transaction_from.rfind(' ',):]
     from_card = str(re.sub(r'.{4}', r'\g<0> ', card_number[:0:-1])[::-1])
-    from_card_open_beg = from_card[:9]
+    from_card_open_beg = from_card[:8]
     from_card_open_end = from_card[-5:]
-    return f'{operation_card}{from_card_open_beg}** **** {from_card_open_end}'
+    return f'{operation_card}{from_card_open_beg}** ****{from_card_open_end}'
 
 
 def operation_to(operation):
@@ -53,7 +53,11 @@ def operation_to(operation):
     Фунция возвращает куда был сделан перевод
     маскирует часть номера карты
     """
-    return operation.get('to')[-4:]
+    transaction_to = operation.get('to', '')
+    to_card = transaction_to[0:transaction_to.rfind(' ',)]
+    card_number = transaction_to[transaction_to.rfind(' ', ):]
+    to_card_open_end = card_number[-4:]
+    return f'{to_card} **{to_card_open_end}'
 
 
 def get_operationamount(operation):
@@ -66,5 +70,5 @@ def get_operationamount(operation):
 def print_operation(operation):
     return (f"{get_date(operation)} "
             f"{get_description(operation)}\n"
-            f"{operation_from(operation)} -> **{operation_to(operation)}\n"
+            f"{operation_from(operation)} -> {operation_to(operation)}\n"
             f"{get_operationamount(operation)}")
