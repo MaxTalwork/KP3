@@ -2,6 +2,7 @@ import json
 import re
 
 
+
 def load_operations():
     """
     Загружает список операций из файла
@@ -19,9 +20,17 @@ def is_executed(operation):
 
 def get_date(operation):
     """
-    Фунция редактирует дату операции
+    Фунция получает дату операции
     """
     return operation.get('date')[:10]
+
+
+def format_date(operation):
+    """
+    Фунция редактирует дату операции
+    """
+    date_string = (operation.get('date')[:10]).split('-')
+    return ':'.join(date_string[::-1])
 
 
 def get_description(operation):
@@ -40,12 +49,15 @@ def operation_from(operation):
     возвращем в нужном формате
     """
     transaction_from = operation.get('from', '')
-    operation_card = transaction_from[0:transaction_from.rfind(' ',)]
-    card_number = transaction_from[transaction_from.rfind(' ',):]
-    from_card = str(re.sub(r'.{4}', r'\g<0> ', card_number[:0:-1])[::-1])
-    from_card_open_beg = from_card[:8]
-    from_card_open_end = from_card[-5:]
-    return f'{operation_card}{from_card_open_beg}** ****{from_card_open_end}'
+    if transaction_from == "":
+        return transaction_from
+    else:
+        operation_card = transaction_from[0:transaction_from.rfind(' ',)]
+        card_number = transaction_from[transaction_from.rfind(' ',):]
+        from_card = str(re.sub(r'.{4}', r'\g<0> ', card_number[:0:-1])[::-1])
+        from_card_open_beg = from_card[:8]
+        from_card_open_end = from_card[-5:]
+        return f'{operation_card}{from_card_open_beg}** ****{from_card_open_end}'
 
 
 def operation_to(operation):
@@ -68,7 +80,7 @@ def get_operationamount(operation):
 
 
 def print_operation(operation):
-    return (f"{get_date(operation)} "
+    return (f"{format_date(operation)} "
             f"{get_description(operation)}\n"
             f"{operation_from(operation)} -> {operation_to(operation)}\n"
             f"{get_operationamount(operation)}")
