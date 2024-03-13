@@ -21,6 +21,7 @@ def test_get_description():
 def test_operation_from():
     assert functions.operation_from({'from': "MasterCard 3152479541115065"}) == "MasterCard 3152 47** **** 5065"
     assert functions.operation_from({'from': "Счет 75106830613657916952"}) == "Счет 7510 68** **** 6952"
+    assert functions.operation_from({'from': ""}) == ""
 
 
 def test_operation_to():
@@ -48,5 +49,4 @@ def test_print_operation():
                                               'RUB'}}, 'description':
             'Перевод организации', 'from':
             'Maestro 1596837868705199', 'to': 'Счет 64686473678894779589'})) ==
-            '2019-08-26 Перевод организации\nMaestro 1596 83** **** 5199 -> Счет **9589\n31957.58 руб.')
-
+            '26:08:2019 Перевод организации\nMaestro 1596 83** **** 5199 -> Счет **9589\n31957.58 руб.')
